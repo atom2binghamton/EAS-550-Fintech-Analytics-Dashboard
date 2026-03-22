@@ -1,0 +1,10 @@
+ProductSubCategoryID,ProductCategoryID,ProductSubCategoryName
+100,1,AA
+101,1,AB
+102,1,AC
+103,2,BA
+104,2,BB
+105,2,BC
+106,3,CA
+107,3,CB
+108,3,CC
