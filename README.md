@@ -1,5 +1,5 @@
 # EAS-550-Fintech-Analytics-Dashboard
-Instructions:
+GENERAL SCRIPT TESTING INSTRUCTIONS:
 1. git checkout -b <name of test branch> (this will also switch to the branch after creating it)
 2. Make a minimal change to the code base such as a comment and save it (since the yml runs the scripts on a pull request)
 3. git add .
@@ -13,16 +13,15 @@ Instructions:
 
 HOW TO TEST SECURITY SCRIPT IN NEON SQL EDITOR:
 (Run these commands one at a time sequentially)
-GRANT "Analyst" TO CURRENT_USER;
-GRANT CONNECT ON DATABASE neondb TO "Analyst";
-SELECT current_user; -- should be owner here
-SET ROLE "Analyst";
-SELECT current_user; -- should be analyst now
-SELECT * FROM product_categories LIMIT 5;
-INSERT INTO product_categories (ProductCategoryID, ProductCategoryName)
-VALUES (999, 'Test Category');
-DELETE FROM product_categories WHERE ProductCategoryID = 1;
-RESET ROLE;
-SELECT current_user; -- should be back to owner
+1. GRANT "Analyst" TO CURRENT_USER;
+2. GRANT CONNECT ON DATABASE neondb TO "Analyst";
+3. SELECT current_user; -- should be owner here
+4. SET ROLE "Analyst";
+5. SELECT current_user; -- should be analyst now
+6. SELECT * FROM product_categories LIMIT 5;
+7. INSERT INTO product_categories (ProductCategoryID, ProductCategoryName) VALUES (999, 'Test Category');
+8. DELETE FROM product_categories WHERE ProductCategoryID = 1;
+9. RESET ROLE;
+10. SELECT current_user; -- should be back to owner
 
 You should be able to see that you've switched to the Analyst role after setting the role. Select should succeed but insert and delete should have permissions denied.
