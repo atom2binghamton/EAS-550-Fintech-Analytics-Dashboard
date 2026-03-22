@@ -47,6 +47,8 @@ def clean_accounts(df):
     df['Status'] = df['Status'].astype(str).str.strip()
     df['OpenDate'] = pd.to_datetime(df['OpenDate'], dayfirst=True, errors='coerce')
     df['ClosedDate'] = pd.to_datetime(df['ClosedDate'], dayfirst=True, errors='coerce')
+    mask = df['ClosedDate'] < df['OpenDate']
+    df.loc[mask, ['OpenDate', 'ClosedDate']] = df.loc[mask, ['ClosedDate', 'OpenDate']].values
     return df
 
 def clean_transactions(df):
