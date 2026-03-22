@@ -99,8 +99,4 @@ def main():
             print(f"⚠️ Warning: {file_path} not found. Skipping {table}.")
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
-=======
-    main()# test trigger
->>>>>>> test-database
