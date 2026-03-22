@@ -1,0 +1,95 @@
+Step 1.1: Conceptual and Logical Design Report
+
+FinTech Analytics Dashboard
+
+1. Introduction
+
+For this project, our team selected a fintech financial transactions dataset designed for analytics and dashboard development. The dataset includes customer records, account information, product hierarchy data, and transaction logs. Based on the source files, we identified the major business entities and organized them into a relational database design that supports both data integrity and downstream business analytics.
+
+The goal of Step 1.1 was to analyze the dataset, identify the core entities, attributes, and relationships, and create an Entity-Relationship Diagram (ERD) that reflects a normalized schema. Our final design includes six main entities: customers, accounts, transactions, product_categories, product_subcategories, and products.
+
+2. Core Entities and Attributes
+
+The dataset naturally separates into several distinct business entities.
+
+Customers
+
+The customers table stores customer-level information, including customer ID, full name, date of birth, gender, region, email, customer status, and join date. These attributes describe the customer as an independent entity.
+
+Accounts
+
+The accounts table stores account-level information, including account ID, customer ID, account type, open date, closed date, account status, registration ID, and balance. Each account belongs to one customer, but one customer may have multiple accounts.
+
+Transactions
+
+The transactions table stores transaction event data, including transaction ID, account ID, product ID, transaction date, transaction amount, transaction type, transaction channel, and transaction status. Each row in this table represents one financial transaction.
+
+Product Categories
+
+The product_categories table stores high-level product category information using a category ID and category name.
+
+Product Subcategories
+
+The product_subcategories table stores a lower level of product classification. Each subcategory belongs to one product category.
+
+Products
+
+The products table stores individual product records, including product ID, product subcategory ID, and product name. Each product belongs to one subcategory.
+
+3. Relationships
+
+The relationships identified in the dataset are primarily one-to-many.
+
+· One customer can have many accounts
+
+· One account can have many transactions
+
+· One product category can have many product subcategories
+
+· One product subcategory can have many products
+
+· One product can appear in many transactions
+
+These relationships are implemented through foreign keys in the child tables. For example, accounts.customer_id references customers.customer_id, and transactions.account_id references accounts.account_id.
+
+Because the core relationships in this dataset are one-to-many rather than many-to-many, no bridge table was required in the current logical design.
+
+4. Third Normal Form (3NF) Justification
+
+The schema was designed to satisfy Third Normal Form (3NF).
+
+First, each table represents a single business entity or concept. Customer attributes are stored only in the customers table, account-related attributes are stored only in the accounts table, transaction-specific attributes are stored only in the transactions table, and product hierarchy information is separated into product_categories, product_subcategories, and products.
+
+Second, non-key attributes depend only on the primary key of their own table. For example:
+
+· In the customers table, attributes such as full name, date of birth, gender, region, email, customer status, and join date depend on customer_id
+
+· In the accounts table, attributes such as account type, open date, closed date, account status, registration ID, and balance depend on account_id
+
+· In the transactions table, attributes such as transaction date, amount, type, channel, and transaction status depend on transaction_id
+
+· In the products table, product name depends on product_id
+
+Third, the design avoids transitive dependency by separating product hierarchy data into its own related tables. Product category names are not repeated in the products table, and product subcategory names are not repeated in the transactions table. Instead, those values are referenced through foreign key relationships. This reduces redundancy and makes the schema easier to maintain.
+
+5. Avoidance of Data Anomalies
+
+The normalized structure helps prevent common data anomalies.
+
+Update Anomaly
+
+If a customer’s email or region changes, the update only needs to be made once in the customers table. It does not need to be repeated across accounts or transactions.
+
+Insertion Anomaly
+
+A new product category or new product can be added without requiring an existing transaction record. Similarly, a customer can be added before any account or transaction exists.
+
+Deletion Anomaly
+
+If a transaction record is deleted, the associated customer, account, and product information remains preserved in their own tables. Deleting one record does not unintentionally remove unrelated business information.
+
+By separating entities into their own tables and linking them through foreign keys, the design improves consistency, reduces duplication, and preserves referential integrity.
+
+6. Conclusion
+
+The final ERD provides a clear and normalized relational structure for the fintech analytics dashboard project. The schema captures the major entities present in the dataset and organizes them into a form that supports both reliable database implementation and future analytical reporting. Since each table focuses on a single entity and all key relationships are clearly defined, the design satisfies 3NF and provides a strong foundation for the next implementation steps.
