@@ -34,6 +34,8 @@ def clean_customers(df):
     df['Gender'] = df['Gender'].astype(str).str.strip()
     df['Region'] = df['Region'].astype(str).str.strip()
     df['Status'] = df['Status'].astype(str).str.strip()
+    df['DOB'] = pd.to_datetime(df['DOB'], dayfirst=True, errors='coerce')
+    df['JoinDate'] = pd.to_datetime(df['JoinDate'], dayfirst=True, errors='coerce')
     return df
 
 def clean_accounts(df):
@@ -43,8 +45,8 @@ def clean_accounts(df):
     df['Balance'] = pd.to_numeric(df['Balance'], errors='coerce').fillna(0)
     df['AccountType'] = df['AccountType'].astype(str).str.strip()
     df['Status'] = df['Status'].astype(str).str.strip()
-    df['OpenDate'] = pd.to_datetime(df['OpenDate'], errors='coerce')
-    df['ClosedDate'] = pd.to_datetime(df['ClosedDate'], errors='coerce')
+    df['OpenDate'] = pd.to_datetime(df['OpenDate'], dayfirst=True, errors='coerce')
+    df['ClosedDate'] = pd.to_datetime(df['ClosedDate'], dayfirst=True, errors='coerce')
     return df
 
 def clean_transactions(df):
@@ -53,7 +55,7 @@ def clean_transactions(df):
     df['AccountID'] = df['AccountID'].astype(int)
     df['ProductID'] = pd.to_numeric(df['ProductID'], errors='coerce').fillna(0).astype(int)
     df['TransactionAmount'] = pd.to_numeric(df['TransactionAmount'], errors='coerce').fillna(0)
-    df['TransactionDate'] = pd.to_datetime(df['TransactionDate'], errors='coerce')
+    df['TransactionDate'] = pd.to_datetime(df['TransactionDate'], dayfirst=True, errors='coerce')
     df['TransactionType'] = df['TransactionType'].astype(str).str.strip()
     df['TransactionChannel'] = df['TransactionChannel'].astype(str).str.strip()
     df['Status'] = df['Status'].astype(str).str.strip()
@@ -97,4 +99,8 @@ def main():
             print(f"⚠️ Warning: {file_path} not found. Skipping {table}.")
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     main()
+=======
+    main()# test trigger
+>>>>>>> test-database
