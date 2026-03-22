@@ -65,6 +65,11 @@ jobs:
         env:
           DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
 
+      - name: Run Security RBAC Setup
+        run: psql "$DATABASE_URL" -f security.sql
+        env:
+          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
+
       - name: Run Data Ingestion
         run: python ingest_data.py
         env:
