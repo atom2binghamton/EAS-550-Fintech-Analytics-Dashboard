@@ -1,0 +1,101 @@
+CustomerID,FullName,DOB,Gender,Region,Email,Status,JoinDate
+1,Norma Fisher,28/02/1977,Female,Florida,thull@yahoo.com,Active,03/08/2023
+2,Susan Wagner,21/09/1978,Female,California,montgomeryjohn@mcgrath.com,Inactive,19/05/2021
+3,Stephanie Sutton,03/09/1991,Female,California,ryan93@woods.net,Inactive,29/08/2020
+4,Ryan Page,04/01/2005,Male,Alaska,vclayton@cross.com,Inactive,02/03/2022
+5,Daniel Pratt,28/03/1969,Male,Colorado,millerluke@hotmail.com,Suspended,14/09/2024
+6,Kristen Mann,17/10/1996,Female,Alaska,tamaramorrison@hotmail.com,Inactive,27/12/2022
+7,Kyle Cruz,18/09/1998,Male,Colorado,ivan20@zavala.com,Suspended,24/10/2021
+8,Sarah Villanueva,30/04/1996,Female,California,aimee33@hotmail.com,Suspended,10/02/2024
+9,Jerry Keller,12/03/2007,Male,Kansas,nguyendarrell@hotmail.com,Inactive,24/05/2023
+10,Dana Dennis,07/07/1967,Female,New Mexico,laura56@garcia.com,Suspended,04/12/2020
+11,Madison Zuniga,09/07/2000,Female,California,martinezjacob@wilson.com,Suspended,07/11/2020
+12,Chloe Arellano,22/12/1967,Female, Massachusetts,jessicabrown@hotmail.com,Suspended,25/09/2020
+13,Marc Huff,21/04/1964,Male,Colorado,lucasmichael@brown.com,Suspended,26/05/2021
+14,Jeanne Green,17/07/1991,Female, Massachusetts,tammybrown@moore.com,Suspended,21/04/2024
+15,Alexis Maldonado,09/04/1998,Female,Kansas,paul42@hotmail.com,Active,24/08/2020
+16,Angela Stevenson,01/08/1996,Female,Colorado,johnbenton@yahoo.com,Active,28/12/2022
+17,Kevin Mcclain,21/10/2001,Male,New Mexico,paul61@wheeler.com,Active,26/11/2021
+18,Marcia Gray,23/05/2005,Female,Colorado,moralesjacqueline@yahoo.com,Active,09/12/2020
+19,Amy Miles,01/12/1989,Female,California,hensontroy@yahoo.com,Active,06/07/2024
+20,Samantha Mccann,17/10/1987,Female,Utah,monroedavid@morales.biz,Suspended,26/03/2023
+21,Adrian Fischer,12/07/2005,Male,Kansas,davidbanks@ramirez-good.com,Suspended,02/08/2024
+22,James Miller,28/03/1978,Male,Utah,callahandennis@hotmail.com,Inactive,30/06/2023
+23,Christopher York,03/06/1962,Male,Florida,eringrant@mays-browning.com,Inactive,30/09/2024
+24,Steven Bowman,20/11/1984,Male,Utah,nicholascarter@hernandez.com,Active,31/08/2023
+25,George Oliver,07/05/1962,Male,Alaska,edwardsilva@yahoo.com,Active,25/11/2023
+26,Beverly Wilson PhD,29/10/1962,Female,California,melodychandler@yahoo.com,Active,21/12/2023
+27,Edwin Rodriguez,15/09/1997,Male,Alaska,zrogers@yahoo.com,Active,07/08/2021
+28,Michael Simmons,01/02/1980,Male,Colorado,samanthasims@yahoo.com,Suspended,13/04/2021
+29,Angela Brady,15/09/1963,Female,Utah,garciaangela@yahoo.com,Suspended,10/05/2024
+30,Richard Klein,29/04/1974,Male,New Mexico,richardsonvanessa@yahoo.com,Suspended,09/07/2025
+31,Jessica Howard,21/11/1963,Female,Utah,mgoodwin@crawford.com,Inactive,24/11/2020
+32,Dr. Loretta Garcia DDS,25/02/1984,Female,Kansas,hintontonya@elliott.biz,Active,22/12/2024
+33,Sylvia Morris,17/06/1993,Female,Colorado,amyvelazquez@gmail.com,Inactive,09/06/2023
+34,Nicole Flores,11/06/1981,Female,New Mexico,nancymorrison@kirby.com,Active,17/07/2024
+35,Bradley Melton,23/03/1962,Male,Utah,davidturner@rivera-martin.com,Active,17/06/2024
+36,Mr. Steven Shaw,05/08/1998,Male,Kansas,burgessrebecca@roberts.biz,Active,23/08/2024
+37,Valerie Lawson,09/06/1975,Female,Florida,yangkevin@scott.com,Active,05/01/2024
+38,James Martin,16/03/1968,Male,Alaska,jessica50@olson.info,Suspended,27/03/2021
+39,Christian Hatfield,09/07/1987,Male, Massachusetts,dhughes@ruiz.com,Suspended,25/10/2020
+40,Casey Nguyen,08/03/2007,Male, Massachusetts,patrickfrank@yahoo.com,Active,26/06/2021
+41,Leonard Mcdonald,28/07/2002,Male,Colorado,montesjennifer@yahoo.com,Inactive,15/08/2021
+42,James Carter,19/11/2005,Male,Kansas,benjaminmyers@sherman-gibson.com,Active,02/12/2020
+43,Andrew Scott,10/05/1961,Male, Massachusetts,claytonweiss@chan.com,Active,04/07/2021
+44,Steven Henderson,05/04/1965,Male,Colorado,abrown@navarro.info,Inactive,17/03/2024
+45,Alvin Calhoun,16/08/1981,Male, Massachusetts,gomezdavid@hotmail.com,Suspended,16/10/2020
+46,Christopher Greer,24/03/1975,Male,Florida,carlsondouglas@gmail.com,Suspended,14/04/2022
+47,Nicholas Santana,12/01/1960,Male,Utah,hannah93@gmail.com,Active,17/02/2022
+48,John Zimmerman,11/02/1977,Male,Colorado,levymichael@woodward-phillips.net,Suspended,28/04/2023
+49,Wendy Garcia,26/01/1999,Female,Kansas,nicholasthomas@gmail.com,Inactive,09/06/2022
+50,David Fischer,08/05/1979,Male, Massachusetts,ialvarado@hotmail.com,Suspended,18/09/2020
+51,Michaela Anderson,01/12/1979,Female, Massachusetts,brittanyevans@yahoo.com,Suspended,05/04/2021
+52,Mark Walsh,22/07/1995,Male,Florida,aortiz@valenzuela.info,Active,25/04/2021
+53,Rebecca Hill,11/07/1997,Female,Kansas,lhebert@reynolds-wright.info,Suspended,09/06/2023
+54,Brenda Ford,29/11/2002,Female,Alaska,sfischer@greer.org,Suspended,21/06/2024
+55,Edwin Mack,04/05/2002,Male, Massachusetts,rogerpotter@gmail.com,Suspended,10/10/2024
+56,David Gill,08/08/1978,Male,Alaska,nelsonelizabeth@scott.org,Inactive,30/11/2023
+57,Nicole Gomez,23/04/2005,Female,Colorado,johnsonlaura@ferguson-wilson.com,Suspended,07/12/2021
+58,Shannon Campbell,09/09/1968,Female,Alaska,jenkinscynthia@figueroa-strong.com,Active,11/01/2023
+59,Laura Taylor,07/12/1967,Female,Florida,dmorales@castro.com,Suspended,24/07/2024
+60,Claudia Burns,03/09/1993,Female,Kansas,dpearson@yahoo.com,Inactive,04/02/2023
+61,Kathleen Clay,22/03/1974,Female,Alaska,thomas08@mcdaniel.biz,Suspended,05/08/2020
+62,Brian Smith,09/12/1977,Male,California,donaldberry@gmail.com,Suspended,09/06/2021
+63,Mitchell Cruz,17/01/1982,Male,Kansas,thernandez@gmail.com,Suspended,31/12/2024
+64,Daniel Lopez,21/04/1983,Male,Utah,yroman@hotmail.com,Active,01/06/2022
+65,Jeffrey Harris,06/12/1962,Male,California,youngchristopher@gmail.com,Inactive,20/08/2023
+66,Margaret Thompson,08/02/2001,Female,Kansas,bushwilliam@yahoo.com,Suspended,18/07/2023
+67,Anthony Terry,02/11/2004,Male,Utah,thenry@yahoo.com,Inactive,17/05/2022
+68,Amanda Williams,07/05/1983,Female,Colorado,diamond21@becker-arellano.biz,Active,14/04/2025
+69,Jesse Morgan,04/07/1966,Male,Kansas,marcus75@johnson-williams.com,Active,22/03/2021
+70,Joseph Lopez,06/04/1973,Male,New Mexico,larry64@yahoo.com,Suspended,20/06/2023
+71,Cynthia Torres,07/02/1997,Female,Florida,murrayjenny@stark.info,Suspended,16/06/2024
+72,Angela Allen,03/01/1970,Female, Massachusetts,scottjones@yahoo.com,Inactive,18/04/2025
+73,Sandra Williams,26/10/1971,Female, Massachusetts,rrobinson@flores-graham.net,Active,21/12/2022
+74,Rachel Dawson,09/08/1989,Female,Colorado,joseph01@hotmail.com,Inactive,20/05/2021
+75,Jason Robinson,05/06/2004,Male,California,htrevino@brewer-wilson.org,Suspended,06/08/2023
+76,Michelle Payne,29/09/1978,Female, Massachusetts,calvinparker@hall-fuller.com,Active,29/06/2025
+77,Rhonda Tran,08/11/1981,Female,Kansas,burnettnatalie@gmail.com,Inactive,17/01/2022
+78,Angela Hubbard,06/05/1993,Female, Massachusetts,jessicacabrera@gomez-garza.info,Inactive,17/06/2021
+79,Alexander Carlson,31/10/1992,Male,Colorado,alexander38@hotmail.com,Suspended,05/12/2021
+80,Johnny Ashley,08/04/1992,Male, Massachusetts,greencassandra@hotmail.com,Inactive,02/03/2022
+81,Rachel Cruz,27/07/1963,Female,Kansas,edwardsjulie@cooper.com,Active,03/10/2022
+82,Christopher Smith,29/07/1998,Male, Massachusetts,michaelhenry@johnson.com,Suspended,18/06/2022
+83,Gabriel Nicholson,06/01/1983,Male,Colorado,patriciarobinson@yahoo.com,Active,01/10/2021
+84,Christopher Murphy,08/05/1987,Male,New Mexico,ortizjoseph@hotmail.com,Inactive,23/06/2024
+85,Krystal Martinez,06/02/1986,Female,Alaska,masonchristy@palmer.com,Active,24/07/2022
+86,Samantha Wright,14/01/1961,Female,Florida,jennifersimmons@garcia.org,Suspended,18/11/2020
+87,Robert Oconnor,25/05/1961,Male, Massachusetts,sdavis@hernandez.biz,Inactive,01/06/2023
+88,Katherine Long,09/09/1980,Female,Colorado,xmadden@hotmail.com,Inactive,24/05/2025
+89,Timothy Johnson,05/06/1986,Male,Kansas,dreed@nelson.com,Active,29/06/2025
+90,Timothy Cooley,20/08/1973,Male,Utah,qgood@gmail.com,Active,12/07/2021
+91,Gary Schmitt,21/01/1976,Male, Massachusetts,sabrinalam@yahoo.com,Active,14/08/2020
+92,Amber Moore,28/12/1982,Female,Kansas,connie57@yahoo.com,Inactive,17/03/2024
+93,Aaron Taylor Jr.,08/02/1968,Male,California,frytimothy@hotmail.com,Suspended,25/09/2022
+94,Chelsea Dunn,21/05/1988,Female,Florida,alyssabrown@hotmail.com,Inactive,18/11/2021
+95,Todd Chen,09/07/1996,Male,New Mexico,sbaker@gmail.com,Inactive,09/03/2024
+96,Sally Ramirez,10/02/1977,Female, Massachusetts,james62@gmail.com,Active,21/11/2024
+97,Matthew Bradshaw,15/11/1997,Male,Utah,steven08@yahoo.com,Inactive,26/06/2022
+98,Heidi Jarvis,30/04/1970,Female,Kansas,courtney70@moss.com,Suspended,11/02/2024
+99,Jerome Manning,21/02/1990,Male,Kansas,frankmclean@walters-shepard.com,Suspended,05/04/2024
+100,Raymond Lynch,16/09/1965,Male, Massachusetts,vasquezkathryn@gmail.com,Inactive,05/12/2023
