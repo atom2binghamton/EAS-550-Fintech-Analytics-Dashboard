@@ -26,13 +26,6 @@ def clean_product_subcategories(df):
     df['ProductSubCategoryName'] = df['ProductSubCategoryName'].astype(str).str.strip()
     return df
 
-def clean_products(df):
-    df = df.drop_duplicates().dropna(subset=['ProductID'])
-    df['ProductID'] = df['ProductID'].astype(int)
-    df['ProductSubcategoryID'] = df['ProductSubcategoryID'].astype(int)
-    df['ProductName'] = df['ProductName'].astype(str).str.strip()
-    return df
-
 def clean_customers(df):
     df = df.drop_duplicates().dropna(subset=['CustomerID'])
     df['CustomerID'] = df['CustomerID'].astype(int)
@@ -41,8 +34,6 @@ def clean_customers(df):
     df['Gender'] = df['Gender'].astype(str).str.strip()
     df['Region'] = df['Region'].astype(str).str.strip()
     df['Status'] = df['Status'].astype(str).str.strip()
-    df['DOB'] = pd.to_datetime(df['DOB'], dayfirst=True, errors='coerce')
-    df['JoinDate'] = pd.to_datetime(df['JoinDate'], dayfirst=True, errors='coerce')
     return df
 
 def clean_accounts(df):
@@ -52,10 +43,8 @@ def clean_accounts(df):
     df['Balance'] = pd.to_numeric(df['Balance'], errors='coerce').fillna(0)
     df['AccountType'] = df['AccountType'].astype(str).str.strip()
     df['Status'] = df['Status'].astype(str).str.strip()
-    df['OpenDate'] = pd.to_datetime(df['OpenDate'], dayfirst=True, errors='coerce')
-    df['ClosedDate'] = pd.to_datetime(df['ClosedDate'], dayfirst=True, errors='coerce')
-    mask = df['ClosedDate'].notna() & (df['ClosedDate'] < df['OpenDate'])
-    df.loc[mask, ['OpenDate', 'ClosedDate']] = df.loc[mask, ['ClosedDate', 'OpenDate']].values
+    df['OpenDate'] = pd.to_datetime(df['OpenDate'], errors='coerce')
+    df['ClosedDate'] = pd.to_datetime(df['ClosedDate'], errors='coerce')
     return df
 
 def clean_transactions(df):
@@ -64,13 +53,14 @@ def clean_transactions(df):
     df['AccountID'] = df['AccountID'].astype(int)
     df['ProductID'] = pd.to_numeric(df['ProductID'], errors='coerce').fillna(0).astype(int)
     df['TransactionAmount'] = pd.to_numeric(df['TransactionAmount'], errors='coerce').fillna(0)
-    df['TransactionDate'] = pd.to_datetime(df['TransactionDate'], dayfirst=True, errors='coerce')
+    df['TransactionDate'] = pd.to_datetime(df['TransactionDate'], errors='coerce')
     df['TransactionType'] = df['TransactionType'].astype(str).str.strip()
     df['TransactionChannel'] = df['TransactionChannel'].astype(str).str.strip()
     df['Status'] = df['Status'].astype(str).str.strip()
     return df
 
 def load_table(df, table_name, id_col):
+    """Inserts rows that do not already exist in the target table."""
     try:
         with engine.connect() as conn:
             query = text(f"SELECT {id_col} FROM {table_name}")
@@ -85,40 +75,26 @@ def load_table(df, table_name, id_col):
         new_rows.to_sql(table_name, engine, if_exists='append', index=False, method='multi')
         print(f"  {table_name}: Inserted {len(new_rows)} rows.")
     else:
-        print(f"   {table_name}: No new rows to add.")
+        print(f"  {table_name}: No new rows to add.")
 
 def main():
-    print("\n Processing product_categories...")
-    df = pd.read_csv("data/DimProductCategory.csv")
-    df = clean_product_categories(df)
-    load_table(df, "product_categories", "ProductCategoryID")
+    tasks = [
+        ("data/DimProductCategory.csv", "product_categories", "ProductCategoryID", clean_product_categories),
+        ("data/DimProductSubCategory.csv", "product_subcategories", "ProductSubCategoryID", clean_product_subcategories),
+        ("data/DimCustomer.csv", "customers", "CustomerID", clean_customers),
+        ("data/DimCustomerUSA.csv", "customers_usa", "CustomerID", clean_customers),
+        ("data/DimAccount.csv", "accounts", "AccountID", clean_accounts),
+        ("data/FactTransaction.csv", "transactions", "TransactionID", clean_transactions)
+    ]
 
-    print("\n Processing product_subcategories...")
-    df = pd.read_csv("data/DimProductSubCategory.csv")
-    df = clean_product_subcategories(df)
-    load_table(df, "product_subcategories", "ProductSubCategoryID")
-
-    print("\n Processing products...")
-    df = pd.read_csv("data/DimProduct.csv")
-    df = clean_products(df)
-    load_table(df, "products", "ProductID")
-
-    print("\n Processing customers...")
-    df = pd.read_csv("data/DimCustomer.csv")
-    df = clean_customers(df)
-    load_table(df, "customers", "CustomerID")
-
-    print("\n Processing accounts...")
-    df = pd.read_csv("data/DimAccount.csv")
-    df = clean_accounts(df)
-    load_table(df, "accounts", "AccountID")
-
-    print("\n Processing transactions...")
-    df = pd.read_csv("data/FactTransaction.csv")
-    df = clean_transactions(df)
-    load_table(df, "transactions", "TransactionID")
-
-    print("\nDone! All tables loaded successfully.")
+    for file_path, table, pk, clean_func in tasks:
+        if os.path.exists(file_path):
+            print(f"Processing {file_path} -> {table}...")
+            df = pd.read_csv(file_path)
+            df = clean_func(df)
+            load_table(df, table, pk)
+        else:
+            print(f"⚠️ Warning: {file_path} not found. Skipping {table}.")
 
 if __name__ == "__main__":
     main()
