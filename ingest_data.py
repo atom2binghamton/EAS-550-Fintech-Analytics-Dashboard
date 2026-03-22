@@ -5,49 +5,39 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+raw_url = os.getenv("DATABASE_URL")
+if raw_url and raw_url.startswith("postgres://"):
+    DATABASE_URL = raw_url.replace("postgres://", "postgresql://", 1)
+else:
+    DATABASE_URL = raw_url
 
-def clean_dim_product_category(df):
-    df = df.drop_duplicates()
-    df = df.dropna(subset=['ProductCategoryID'])
+engine = create_engine(DATABASE_URL)
+
+def clean_product_categories(df):
+    df = df.drop_duplicates().dropna(subset=['ProductCategoryID'])
     df['ProductCategoryID'] = df['ProductCategoryID'].astype(int)
     df['ProductCategoryName'] = df['ProductCategoryName'].astype(str).str.strip()
     return df
 
-def clean_dim_product_subcategory(df):
-    df = df.drop_duplicates()
-    df = df.dropna(subset=['ProductSubCategoryID', 'ProductCategoryID'])
+def clean_product_subcategories(df):
+    df = df.drop_duplicates().dropna(subset=['ProductSubCategoryID', 'ProductCategoryID'])
     df['ProductSubCategoryID'] = df['ProductSubCategoryID'].astype(int)
     df['ProductCategoryID'] = df['ProductCategoryID'].astype(int)
     df['ProductSubCategoryName'] = df['ProductSubCategoryName'].astype(str).str.strip()
     return df
 
-def clean_dim_customer(df):
-    df = df.drop_duplicates()
-    df = df.dropna(subset=['CustomerID'])
+def clean_customers(df):
+    df = df.drop_duplicates().dropna(subset=['CustomerID'])
     df['CustomerID'] = df['CustomerID'].astype(int)
     df['FullName'] = df['FullName'].astype(str).str.strip()
     df['Email'] = df['Email'].astype(str).str.strip().str.lower()
-    df['Status'] = df['Status'].astype(str).str.strip()
     df['Gender'] = df['Gender'].astype(str).str.strip()
     df['Region'] = df['Region'].astype(str).str.strip()
-    return df
-
-def clean_dim_customer_usa(df):
-    df = df.drop_duplicates()
-    df = df.dropna(subset=['CustomerID'])
-    df['CustomerID'] = df['CustomerID'].astype(int)
-    df['FullName'] = df['FullName'].astype(str).str.strip()
-    df['Email'] = df['Email'].astype(str).str.strip().str.lower()
     df['Status'] = df['Status'].astype(str).str.strip()
-    df['Gender'] = df['Gender'].astype(str).str.strip()
-    df['Region'] = df['Region'].astype(str).str.strip()
     return df
 
-def clean_dim_account(df):
-    df = df.drop_duplicates()
-    df = df.dropna(subset=['AccountID'])
+def clean_accounts(df):
+    df = df.drop_duplicates().dropna(subset=['AccountID'])
     df['AccountID'] = df['AccountID'].astype(int)
     df['CustomerID'] = df['CustomerID'].astype(int)
     df['Balance'] = pd.to_numeric(df['Balance'], errors='coerce').fillna(0)
@@ -57,9 +47,8 @@ def clean_dim_account(df):
     df['ClosedDate'] = pd.to_datetime(df['ClosedDate'], errors='coerce')
     return df
 
-def clean_fact_transaction(df):
-    df = df.drop_duplicates()
-    df = df.dropna(subset=['TransactionID'])
+def clean_transactions(df):
+    df = df.drop_duplicates().dropna(subset=['TransactionID'])
     df['TransactionID'] = df['TransactionID'].astype(int)
     df['AccountID'] = df['AccountID'].astype(int)
     df['ProductID'] = pd.to_numeric(df['ProductID'], errors='coerce').fillna(0).astype(int)
@@ -71,53 +60,41 @@ def clean_fact_transaction(df):
     return df
 
 def load_table(df, table_name, id_col):
-    with engine.connect() as conn:
-        try:
-            existing_ids = pd.read_sql(
-                text(f"SELECT {id_col} FROM {table_name}"), conn
-            )[id_col].tolist()
-        except Exception:
-            existing_ids = []
+    """Inserts rows that do not already exist in the target table."""
+    try:
+        with engine.connect() as conn:
+            query = text(f"SELECT {id_col} FROM {table_name}")
+            existing_ids = pd.read_sql(query, conn)[id_col.lower()].tolist()
+    except Exception:
+        existing_ids = []
 
     new_rows = df[~df[id_col].isin(existing_ids)]
+
     if len(new_rows) > 0:
-        new_rows.to_sql(table_name, engine, if_exists='append', index=False)
-        print(f"  Inserted {len(new_rows)} rows into {table_name}")
+        new_rows.columns = [c.lower() for c in new_rows.columns]
+        new_rows.to_sql(table_name, engine, if_exists='append', index=False, method='multi')
+        print(f"  {table_name}: Inserted {len(new_rows)} rows.")
     else:
-        print(f"  No new rows for {table_name} (already loaded)")
+        print(f"  {table_name}: No new rows to add.")
 
 def main():
-    print("\n Loading DimProductCategory...")
-    df = pd.read_csv("data/DimProductCategory.csv")
-    df = clean_dim_product_category(df)
-    load_table(df, "DimProductCategory", "ProductCategoryID")
+    tasks = [
+        ("data/DimProductCategory.csv", "product_categories", "ProductCategoryID", clean_product_categories),
+        ("data/DimProductSubCategory.csv", "product_subcategories", "ProductSubCategoryID", clean_product_subcategories),
+        ("data/DimCustomer.csv", "customers", "CustomerID", clean_customers),
+        ("data/DimCustomerUSA.csv", "customers_usa", "CustomerID", clean_customers),
+        ("data/DimAccount.csv", "accounts", "AccountID", clean_accounts),
+        ("data/FactTransaction.csv", "transactions", "TransactionID", clean_transactions)
+    ]
 
-    print("\n Loading DimProductSubCategory...")
-    df = pd.read_csv("data/DimProductSubCategory.csv")
-    df = clean_dim_product_subcategory(df)
-    load_table(df, "DimProductSubCategory", "ProductSubCategoryID")
-
-    print("\n Loading DimCustomer...")
-    df = pd.read_csv("data/DimCustomer.csv")
-    df = clean_dim_customer(df)
-    load_table(df, "DimCustomer", "CustomerID")
-
-    print("\n Loading DimCustomerUSA...")
-    df = pd.read_csv("data/DimCustomerUSA.csv")
-    df = clean_dim_customer_usa(df)
-    load_table(df, "DimCustomerUSA", "CustomerID")
-
-    print("\n Loading DimAccount...")
-    df = pd.read_csv("data/DimAccount.csv")
-    df = clean_dim_account(df)
-    load_table(df, "DimAccount", "AccountID")
-
-    print("\n Loading FactTransaction...")
-    df = pd.read_csv("data/FactTransaction.csv")
-    df = clean_fact_transaction(df)
-    load_table(df, "FactTransaction", "TransactionID")
-
-    print("\n Done! All tables loaded successfully.")
+    for file_path, table, pk, clean_func in tasks:
+        if os.path.exists(file_path):
+            print(f"Processing {file_path} -> {table}...")
+            df = pd.read_csv(file_path)
+            df = clean_func(df)
+            load_table(df, table, pk)
+        else:
+            print(f"⚠️ Warning: {file_path} not found. Skipping {table}.")
 
 if __name__ == "__main__":
     main()
