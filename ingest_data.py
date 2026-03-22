@@ -26,6 +26,27 @@ def clean_product_subcategories(df):
     df['ProductSubCategoryName'] = df['ProductSubCategoryName'].astype(str).str.strip()
     return df
 
+def generate_products_from_transactions():
+    """
+    No DimProduct.csv exists in the dataset.
+    We generate a products table from the unique ProductIDs in FactTransaction.
+    Each product is assigned to SubCategoryID 100 (first available subcategory).
+    """
+    df_trans = pd.read_csv("data/FactTransaction.csv")
+    df_sub = pd.read_csv("data/DimProductSubCategory.csv")
+    
+    first_sub_id = int(df_sub['ProductSubCategoryID'].min())
+    
+    unique_ids = df_trans['ProductID'].dropna().unique()
+    products_df = pd.DataFrame({
+        'ProductID': unique_ids,
+        'ProductSubcategoryID': first_sub_id,
+        'ProductName': ['Product_' + str(int(pid)) for pid in unique_ids]
+    })
+    products_df['ProductID'] = products_df['ProductID'].astype(int)
+    products_df = products_df.drop_duplicates(subset=['ProductID'])
+    return products_df
+
 def clean_customers(df):
     df = df.drop_duplicates().dropna(subset=['CustomerID'])
     df['CustomerID'] = df['CustomerID'].astype(int)
@@ -47,6 +68,8 @@ def clean_accounts(df):
     df['Status'] = df['Status'].astype(str).str.strip()
     df['OpenDate'] = pd.to_datetime(df['OpenDate'], dayfirst=True, errors='coerce')
     df['ClosedDate'] = pd.to_datetime(df['ClosedDate'], dayfirst=True, errors='coerce')
+    mask = df['ClosedDate'].notna() & (df['ClosedDate'] < df['OpenDate'])
+    df.loc[mask, ['OpenDate', 'ClosedDate']] = df.loc[mask, ['ClosedDate', 'OpenDate']].values
     return df
 
 def clean_transactions(df):
@@ -62,7 +85,6 @@ def clean_transactions(df):
     return df
 
 def load_table(df, table_name, id_col):
-    """Inserts rows that do not already exist in the target table."""
     try:
         with engine.connect() as conn:
             query = text(f"SELECT {id_col} FROM {table_name}")
@@ -80,23 +102,42 @@ def load_table(df, table_name, id_col):
         print(f"  {table_name}: No new rows to add.")
 
 def main():
-    tasks = [
-        ("data/DimProductCategory.csv", "product_categories", "ProductCategoryID", clean_product_categories),
-        ("data/DimProductSubCategory.csv", "product_subcategories", "ProductSubCategoryID", clean_product_subcategories),
-        ("data/DimCustomer.csv", "customers", "CustomerID", clean_customers),
-        ("data/DimCustomerUSA.csv", "customers_usa", "CustomerID", clean_customers),
-        ("data/DimAccount.csv", "accounts", "AccountID", clean_accounts),
-        ("data/FactTransaction.csv", "transactions", "TransactionID", clean_transactions)
-    ]
+    print("\n Processing product_categories...")
+    df = pd.read_csv("data/DimProductCategory.csv")
+    df = clean_product_categories(df)
+    load_table(df, "product_categories", "ProductCategoryID")
 
-    for file_path, table, pk, clean_func in tasks:
-        if os.path.exists(file_path):
-            print(f"Processing {file_path} -> {table}...")
-            df = pd.read_csv(file_path)
-            df = clean_func(df)
-            load_table(df, table, pk)
-        else:
-            print(f"⚠️ Warning: {file_path} not found. Skipping {table}.")
+    print("\n Processing product_subcategories...")
+    df = pd.read_csv("data/DimProductSubCategory.csv")
+    df = clean_product_subcategories(df)
+    load_table(df, "product_subcategories", "ProductSubCategoryID")
+
+    print("\n Generating products from FactTransaction (no DimProduct.csv)...")
+    df = generate_products_from_transactions()
+    load_table(df, "products", "ProductID")
+
+    print("\n Processing customers...")
+    df = pd.read_csv("data/DimCustomer.csv")
+    df = clean_customers(df)
+    load_table(df, "customers", "CustomerID")
+
+    print("\n Processing customers_usa...")
+    if os.path.exists("data/DimCustomerUSA.csv"):
+        df = pd.read_csv("data/DimCustomerUSA.csv")
+        df = clean_customers(df)
+        load_table(df, "customers", "CustomerID")
+
+    print("\n Processing accounts...")
+    df = pd.read_csv("data/DimAccount.csv")
+    df = clean_accounts(df)
+    load_table(df, "accounts", "AccountID")
+
+    print("\n Processing transactions...")
+    df = pd.read_csv("data/FactTransaction.csv")
+    df = clean_transactions(df)
+    load_table(df, "transactions", "TransactionID")
+
+    print("\n Done! All tables loaded successfully.")
 
 if __name__ == "__main__":
     main()
