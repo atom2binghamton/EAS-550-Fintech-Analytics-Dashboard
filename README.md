@@ -1,10 +1,10 @@
 # EAS-550-Fintech-Analytics-Dashboard
 GENERAL SCRIPT TESTING INSTRUCTIONS:
-1. git checkout -b `<name of test branch>` (this will also switch to the branch after creating it)
+1. git checkout -b `<testing-data>` (this will also switch to the branch after creating it)
 2. Make a minimal change to the code base such as a comment and save it (since the yml runs the scripts on a pull request)
 3. git add .
 4. git commit -m "Testing scripts"
-5. git push origin `<name of test branch>`
+5. git push origin `<testing-data>`
 6. Open the pull request to initiate the script execution (repository > pull requests > new pull request > select your test branch)
 7. Let the GitHub actions checks run
 8. Check your neon database and run some test queries and security checks by trying to perform an action that is not authorized
