@@ -9,7 +9,7 @@ GENERAL SCRIPT TESTING INSTRUCTIONS:
 7. Let the GitHub actions checks run
 8. Check your neon database and run some test queries and security checks by trying to perform an action that is not authorized
 9. For deletion, navigate to the test branch in pull requests and click close pull request to initiate the neon branch deletion
-10. Link to youtube video demonstration: `<put it here>`
+10. Link to youtube video demonstration: `<https://youtu.be/-m7-Xv_xZ5Q>`
 
 HOW TO TEST SECURITY SCRIPT IN NEON SQL EDITOR:
 (Run these commands one at a time sequentially)
