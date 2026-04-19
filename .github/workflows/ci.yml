@@ -31,9 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install sqlfluff sqlfluff-templater-dbt dbt-postgres
 
-      - name: Lint SQL with SQLFluff
-        run: sqlfluff lint . --dialect postgres
-
       - name: Create dbt profiles.yml
         run: |
           mkdir -p ~/.dbt
@@ -52,6 +49,9 @@ jobs:
                 threads: 4
                 sslmode: require
           EOF
+
+      - name: Lint SQL with SQLFluff
+        run: sqlfluff lint . --dialect postgres
 
       - name: Install dbt packages
         working-directory: ./fintech_dbt
