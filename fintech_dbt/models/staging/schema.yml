@@ -1,0 +1,192 @@
+version: 2
+
+sources:
+  - name: fintech_oltp
+    database: neondb
+    schema: public
+    description: "raw tables from phase 1"
+    tables:
+      - name: customers
+        columns:
+          - name: customerid
+            tests:
+              - unique
+              - not_null
+          - name: email
+            tests:
+              - unique
+              - not_null
+          - name: fullname
+            tests:
+              - not_null
+          - name: status
+            tests:
+              - not_null
+          - name: joindate
+            tests:
+              - not_null
+
+      - name: accounts
+        columns:
+          - name: accountid
+            tests:
+              - unique
+              - not_null
+          - name: customerid
+            tests:
+              - not_null
+              - relationships:
+                  to: source('fintech_oltp', 'customers')
+                  field: customerid
+          - name: accounttype
+            tests:
+              - not_null
+          - name: opendate
+            tests:
+              - not_null
+          - name: status
+            tests:
+              - not_null
+          - name: balance
+            tests:
+              - not_null
+
+      - name: transactions
+        columns:
+          - name: transactionid
+            tests:
+              - unique
+              - not_null
+          - name: accountid
+            tests:
+              - not_null
+              - relationships:
+                  to: source('fintech_oltp', 'accounts')
+                  field: accountid
+          - name: productid
+            tests:
+              - not_null
+              - relationships:
+                  to: source('fintech_oltp', 'products')
+                  field: productid
+          - name: transactiondate
+            tests:
+              - not_null
+          - name: transactionamount
+            tests:
+              - not_null
+          - name: transactiontype
+            tests:
+              - not_null
+          - name: status
+            tests:
+              - not_null
+
+      - name: products
+        columns:
+          - name: productid
+            tests:
+              - unique
+              - not_null
+          - name: productsubcategoryid
+            tests:
+              - not_null
+              - relationships:
+                  to: source('fintech_oltp', 'product_subcategories')
+                  field: productsubcategoryid
+          - name: productname
+            tests:
+              - unique
+              - not_null
+
+      - name: product_subcategories
+        columns:
+          - name: productsubcategoryid
+            tests:
+              - unique
+              - not_null
+          - name: productcategoryid
+            tests:
+              - not_null
+              - relationships:
+                  to: source('fintech_oltp', 'product_categories')
+                  field: productcategoryid
+          - name: productsubcategoryname
+            tests:
+              - not_null
+
+      - name: product_categories
+        columns:
+          - name: productcategoryid
+            tests:
+              - unique
+              - not_null
+          - name: productcategoryname
+            tests:
+              - unique
+              - not_null
+
+models:
+  - name: stg_customers
+    description: "renamed columns from customers"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+      - name: full_name
+        tests:
+          - not_null
+
+  - name: stg_accounts
+    description: "renamed columns from accounts"
+    columns:
+      - name: account_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+
+  - name: stg_transactions
+    description: "renamed columns from transactions"
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: account_id
+        tests:
+          - not_null
+      - name: transaction_amount
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: "renamed columns from products"
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_product_subcategories
+    description: "renamed columns from product_subcategories"
+    columns:
+      - name: product_subcategory_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_product_categories
+    description: "renamed columns from product_categories"
+    columns:
+      - name: product_category_id
+        tests:
+          - unique
+          - not_null

@@ -1,0 +1,119 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "customer dimension, one row per customer"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+      - name: full_name
+        tests:
+          - not_null
+      - name: customer_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Active', 'Inactive', 'Churned', 'Suspended']
+      - name: gender
+        tests:
+          - accepted_values:
+              values: ['Male', 'Female', 'Other']
+      - name: join_date
+        tests:
+          - not_null
+
+  - name: dim_account
+    description: "account dimension with customer info joined in"
+    columns:
+      - name: account_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: account_type
+        tests:
+          - not_null
+      - name: account_status
+        tests:
+          - not_null
+      - name: open_date
+        tests:
+          - not_null
+      - name: balance
+        tests:
+          - not_null
+
+  - name: dim_product
+    description: "product dimension, category/subcategory/product all in one table"
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        tests:
+          - not_null
+      - name: product_subcategory_id
+        tests:
+          - not_null
+      - name: product_subcategory_name
+        tests:
+          - not_null
+      - name: product_category_id
+        tests:
+          - not_null
+      - name: product_category_name
+        tests:
+          - not_null
+
+  - name: fact_transactions
+    description: "main fact table, center of the star schema"
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: account_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_account')
+              field: account_id
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_id
+      - name: transaction_date
+        tests:
+          - not_null
+      - name: transaction_amount
+        tests:
+          - not_null
+      - name: transaction_type
+        tests:
+          - not_null
+      - name: transaction_status
+        tests:
+          - not_null
+      - name: transaction_channel
+        tests:
+          - not_null
