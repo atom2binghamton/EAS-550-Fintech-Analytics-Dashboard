@@ -1,4 +1,4 @@
--- query3.sql
+-- query3.sql testing
 -- Customer cohort retention analysis by join month
 
 -- 1. Assign each customer to their join-month cohort
