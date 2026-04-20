@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DBT_HOST: ${{ secrets.DBT_HOST }}
-      DBT_USER: ${{ secrets.DBT_USER }}
-      DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
-      DBT_PORT: ${{ secrets.DBT_PORT }}
-      DBT_DBNAME: ${{ secrets.DBT_DBNAME }}
-      DBT_SCHEMA: ${{ secrets.DBT_SCHEMA }}
+      DBT_HOST: ep-frosty-math-anosahcy-pooler.c-6.us-east-1.aws.neon.tech
+      DBT_USER: neondb_owner
+      DBT_PASSWORD: npg_g5hVQRvYS6uk
+      DBT_PORT: 5432
+      DBT_DBNAME: neondb
+      DBT_SCHEMA: public
 
     steps:
       - name: Checkout repository
