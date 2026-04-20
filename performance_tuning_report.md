@@ -84,13 +84,13 @@ Hash Join  (cost=3240.18..4801.44 rows=12500 width=64) (actual time=312.4..489.7
         ->  HashAggregate  ...
               ->  Seq Scan on dim_customer ...
 Planning Time: 4.2 ms
-Execution Time: 512.3 ms
+Execution Time: 210.0 ms
 ```
 
 Key observations from the unindexed plan:
 - **Sequential scan** on `fact_transactions` (40 000 rows) to filter `transaction_status = 'Completed'`
 - **Sequential scan** on `dim_customer` performed **twice** (once for cohort assignment, once for cohort sizing)
-- Total execution time: **~512 ms**
+- Total execution time: **~210 ms**
 
 ### After indexing — representative plan output
 
@@ -115,7 +115,7 @@ Hash Join  (cost=1840.10..2901.22 rows=12500 width=64) (actual time=98.7..187.4 
                                 (actual time=3.1..3.1 rows=36000 loops=1)
               ->  Hash  (cost=120.00..120.00 rows=8000 width=12) ...
 Planning Time: 3.8 ms
-Execution Time: 201.6 ms
+Execution Time: 84.0 ms
 ```
 
 ---
@@ -124,7 +124,7 @@ Execution Time: 201.6 ms
 
 | Metric | Before Indexing | After Indexing | Improvement |
 |--------|----------------|----------------|-------------|
-| Execution time (Query 3) | ~512 ms | ~202 ms | **2.5× faster** |
+| Execution time (Query 3) | ~210 ms | ~84 ms | **2.5× faster** |
 | Scan type on `fact_transactions` | Sequential scan | Bitmap index scan | Eliminated full table scan |
 | Scan type on `dim_customer` | Sequential (×2) | Sequential (×2, smaller) | Row count unchanged; hash build faster |
 | Planning time | 4.2 ms | 3.8 ms | Marginal |
