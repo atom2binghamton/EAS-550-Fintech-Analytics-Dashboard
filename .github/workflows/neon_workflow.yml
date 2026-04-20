@@ -9,7 +9,7 @@ on:
       - closed
 
 concurrency:
-  group: ${{ github.workflow }}-${– github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   setup:
@@ -67,6 +67,11 @@ jobs:
 
       - name: Run Security RBAC Setup
         run: psql "$DATABASE_URL" -f security.sql
+        env:
+          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
+
+      - name: Run Index Setup
+        run: psql "$DATABASE_URL" -f indexes.sql
         env:
           DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
 
