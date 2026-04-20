@@ -58,7 +58,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client
           python -m pip install --upgrade pip
-          pip install pandas sqlalchemy psycopg2-binary python-dotenv
+          pip install pandas sqlalchemy psycopg2-binary python-dotenv dbt-postgres
 
       - name: Run Schema Setup
         run: psql "$DATABASE_URL" -f schema.sql
@@ -77,6 +77,28 @@ jobs:
 
       - name: Run Data Ingestion
         run: python ingest_data.py
+        env:
+          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
+
+      - name: Create dbt profiles.yml for preview branch
+        run: |
+          python3 -c "
+          import os
+          from urllib.parse import urlparse
+          url = urlparse(os.environ['DATABASE_URL'])
+          import pathlib
+          pathlib.Path(os.path.expanduser('~/.dbt')).mkdir(exist_ok=True)
+          with open(os.path.expanduser('~/.dbt/profiles.yml'), 'w') as f:
+              f.write(f'''fintech_analytics:\n  target: dev\n  outputs:\n    dev:\n      type: postgres\n      host: {url.hostname}\n      user: {url.username}\n      password: {url.password}\n      port: {url.port or 5432}\n      dbname: {url.path.lstrip('/')}\n      schema: public\n      threads: 4\n      sslmode: require\n''')
+          "
+        env:
+          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
+
+      - name: Run dbt build on preview branch
+        working-directory: ./fintech_dbt
+        run: |
+          dbt deps
+          dbt build
         env:
           DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
 
