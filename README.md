@@ -4,6 +4,8 @@
 >
 > **GitHub Repo:** [https://github.com/atom2binghamton/EAS-550-Fintech-Analytics-Dashboard](https://github.com/atom2binghamton/EAS-550-Fintech-Analytics-Dashboard)
 
+Contributors: Anthony Tom, Hwimyeong Baek, Abdul Salam
+
 A financial analytics platform built on PostgreSQL with dbt star schema transformations and an interactive Streamlit dashboard deployed to the cloud and backed by a CI/CD pipeline.
 
 ---
@@ -380,7 +382,11 @@ For Render deployment, set `DATABASE_URL` in the **Environment** tab of your Ren
 
 ## Demo Video
 
+**[Watch the full demo on YouTube →](https://youtu.be/zDEVmXmH2ds)**
 
+This video provides a live walkthrough of the interactive dashboard including filters, charts, and analytical queries.
+
+---
 
 ## Performance Tuning
 
